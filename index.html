@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Катарага Елизавета - Лабораторная работа №1</title>
+
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+
+
+<script type="text/javascript">
+    function Encrypt() {
+        plaintext = document.getElementById("input_1").value.toLowerCase().replace(/[^a-z]/g, "");
+        console.log(plaintext.length);
+        k = document.getElementById("key").value.toLowerCase().replace(/[^a-z]/g, "");
+
+        if (plaintext.length < 1) {
+            alert("Пожалуйста введите какую-то фразу (числа и буквы только)");
+            return;
+        }
+        if (k.length <= 1) {
+            alert("Ключ должен содержать минимум 2 символа");
+            return;
+        }
+        ciphertext = "";
+        for (i = 0; i < plaintext.length; i++) {
+            ciphertext += String.fromCharCode((((k.charCodeAt(i % k.length) - 97) - (plaintext.charCodeAt(i) - 97) + 26) % 26) + 97);
+        }
+        document.getElementById("output").value = ciphertext;
+    }
+
+    function Decrypt(f) {
+        ciphertext = document.getElementById("output").value.toLowerCase().replace(/[^a-z]/g, "");
+        k = document.getElementById("key").value.toLowerCase().replace(/[^a-z]/g, "");
+        // do some error checking
+        if (ciphertext.length < 1) {
+            alert("Пожалуйста введите какую-то фразу (числа и буквы только)");
+            return;
+        }
+        if (k.length <= 1) {
+            alert("Ключ должен содержать минимум 2 символа");
+            return;
+        }
+        plaintext = "";
+        for (i = 0; i < ciphertext.length; i++) {
+            plaintext += String.fromCharCode((( (k.charCodeAt(i % k.length) - 97) - (ciphertext.charCodeAt(i) - 97) + 26) % 26) + 97);
+        }
+        document.getElementById("input_1").value = plaintext;
+    }
+</script>
+
+<body style="text-align: center">
+<h1 style="margin-bottom: 55px;">Beaufort Cipher - Шифр Бофора</h1>
+<div class="container">
+    <div class="row col-md-6 col-md-offset-3">
+        <br>
+        <form role="form">
+            <div class="form-group">
+                <textarea id="input_1" class="form-control" placeholder="Введите фразу для шифрования" rows="3"></textarea>
+            </div>
+            <br>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="key" placeholder="Введите ключ">
+            </div>
+            <br>
+
+            <input type="button" class="btn btn-success" onclick="Encrypt()" value="Зашифровать">
+            <input type="button" onclick="Decrypt()" class="btn btn-danger" value="Дешифровать">
+
+            <br>
+            <br>
+            <br>
+            <div class="form-group">
+                <textarea id="output" class="form-control" rows="3" placeholder="Выходные данные"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
